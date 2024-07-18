@@ -1,21 +1,51 @@
 // [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
-
 enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
 
-class Usuario
+class Usuario(val nome: String)
 
 data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
 
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
-
+data class Formacao(
+    val nome: String,
+    val nivel: Nivel,
+    var conteudos: List<ConteudoEducacional>
+) {
     val inscritos = mutableListOf<Usuario>()
     
     fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
+        if (usuario !in inscritos) {
+            inscritos.add(usuario)
+            println("${usuario.nome} foi matriculado na formação $nome")
+        } else {
+            println("${usuario.nome} já está matriculado na formação $nome")
+        }
     }
 }
 
 fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+    // Criando conteúdos educacionais
+    val conteudo1 = ConteudoEducacional("Introdução ao Kotlin", 120)
+    val conteudo2 = ConteudoEducacional("Programação Orientada a Objetos", 180)
+    
+    // Criando formações
+    val formacaoKotlin = Formacao(
+        nome = "Formação em Kotlin",
+        nivel = Nivel.INTERMEDIARIO,
+        conteudos = listOf(conteudo1, conteudo2)
+    )
+    
+    // Criando usuários
+    val usuario1 = Usuario("Alice")
+    val usuario2 = Usuario("Bob")
+    
+    // Matriculando usuários
+    formacaoKotlin.matricular(usuario1)
+    formacaoKotlin.matricular(usuario2)
+    formacaoKotlin.matricular(usuario1)  // Tentando matricular o mesmo usuário novamente
+    
+    // Exibindo informações sobre a formação
+    println("Formação: ${formacaoKotlin.nome}")
+    println("Nível: ${formacaoKotlin.nivel}")
+    println("Conteúdos: ${formacaoKotlin.conteudos.joinToString { it.nome }}")
+    println("Inscritos: ${formacaoKotlin.inscritos.joinToString { it.nome }}")
 }
